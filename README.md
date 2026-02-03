@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # BitBuds - Kids Coding Platform
 
 A gamified coding platform designed to teach children programming through interactive missions, badges, and projects.
@@ -347,4 +347,3 @@ BitBuds is currently in the **early prototype phase**.
 
 
 
->>>>>>> 8ccaeef89bf98a72f1240eeb19896616c7db069c
