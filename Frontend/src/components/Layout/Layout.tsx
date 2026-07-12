@@ -17,6 +17,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                           location.pathname.startsWith('/avatar') ||
                           location.pathname.startsWith('/parent-dashboard');
 
+  // The home page has its own nav and footer from the Landing components
+  if (isHomePage) {
+    return <>{children}</>;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
       <Header />
@@ -26,7 +31,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {children}
         </main>
       </div>
-      {isHomePage && <Footer />}
+      <Footer />
     </div>
   );
 };
