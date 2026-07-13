@@ -11,14 +11,17 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  const isImmersivePage = location.pathname.startsWith('/world') || 
+                          location.pathname.startsWith('/level') || 
+                          location.pathname === '/auth';
   const isDashboardPage = location.pathname.startsWith('/dashboard') || 
                           location.pathname.startsWith('/missions') || 
                           location.pathname.startsWith('/codelab') || 
                           location.pathname.startsWith('/avatar') ||
                           location.pathname.startsWith('/parent-dashboard');
 
-  // The home page has its own nav and footer from the Landing components
-  if (isHomePage) {
+  // The home page and immersive game screens bypass headers/footers
+  if (isHomePage || isImmersivePage) {
     return <>{children}</>;
   }
 

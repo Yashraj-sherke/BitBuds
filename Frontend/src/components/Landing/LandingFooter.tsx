@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import bitMascot from '../../assets/bit-mascot.png';
+import logoAsset from '../../assets/logo.png';
 
 function FooterCol({ title, links }: { title: string; links: { label: string; href: string }[] }) {
   return (
@@ -29,11 +31,8 @@ export const LandingFooter: React.FC = () => {
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="grid gap-12 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)]">
           <div>
-            <div className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary font-accent text-lg font-extrabold text-white shadow-[0_4px_12px_-4px_rgba(79,70,229,0.6)]">
-                B
-              </span>
-              <span className="font-display text-lg font-semibold tracking-tight">BitBuds</span>
+            <div className="flex items-center">
+              <img src={logoAsset} alt="BitBuds Logo" className="h-10 w-auto object-contain" />
             </div>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
               The coding adventure kids ask for by name. Built by teachers, parents, and slightly obsessive game designers.
@@ -104,13 +103,25 @@ export const LandingFooter: React.FC = () => {
         </div>
       </div>
 
-      <img
-        src={bitMascot}
-        alt=""
-        aria-hidden
-        loading="lazy"
-        className="pointer-events-none absolute -bottom-8 -right-8 hidden h-52 w-52 select-none opacity-90 md:block"
-      />
+      <div className="pointer-events-none absolute bottom-2 right-6 hidden md:flex items-end gap-3 select-none z-10">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, y: 15 }}
+          whileInView={{ opacity: 1, scale: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="mb-8 max-w-[200px] rounded-2xl bg-primary/10 border border-primary/20 px-3.5 py-2.5 text-xs font-bold text-primary shadow-lg backdrop-blur-md"
+        >
+          Let's save the floating worlds! 🚀
+          <span className="absolute right-3 -bottom-1.5 size-3 rotate-45 border-r border-b border-primary/20 bg-background" />
+        </motion.div>
+        <motion.img
+          src={bitMascot}
+          alt="Bit mascot waving"
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          className="h-36 w-auto object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.15)]"
+        />
+      </div>
     </footer>
   );
 };

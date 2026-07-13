@@ -10,18 +10,34 @@ import Avatar from './pages/Avatar';
 import Badges from './pages/Badges';
 import Settings from './pages/Settings';
 import ParentDashboard from './pages/ParentDashboard';
+import Auth from './pages/Auth';
+import { WorldMagicKingdom } from './pages/WorldMagicKingdom';
+import { LevelMagicKingdomChapter1 } from './pages/LevelMagicKingdomChapter1';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
+import { Toaster } from 'sonner';
 
 function App() {
   return (
     <AuthProvider>
+      <Toaster richColors position="top-center" />
       <Router>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/auth" element={<Auth />} />
             <Route path="/dashboard" element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/world/magic-kingdom" element={
+              <ProtectedRoute>
+                <WorldMagicKingdom />
+              </ProtectedRoute>
+            } />
+            <Route path="/level/magic-kingdom/chapter-1" element={
+              <ProtectedRoute>
+                <LevelMagicKingdomChapter1 />
               </ProtectedRoute>
             } />
             <Route path="/missions" element={

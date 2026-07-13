@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useAuth } from '../../contexts/AuthContext';
 import { cn } from '../../lib/utils';
+import logoAsset from '../../assets/logo.png';
 
 const LINKS = [
   { label: 'Adventure', href: '#worlds' },
@@ -13,6 +16,7 @@ const LINKS = [
 export const LandingNav: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -34,11 +38,8 @@ export const LandingNav: React.FC = () => {
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
-        <a href="#top" className="flex min-w-0 items-center gap-2.5" aria-label="BitBuds home">
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary font-accent text-lg font-extrabold text-white shadow-[0_4px_12px_-4px_rgba(79,70,229,0.6)]">
-            B
-          </span>
-          <span className="font-display text-lg font-semibold tracking-tight">BitBuds</span>
+        <a href="#top" className="flex min-w-0 items-center" aria-label="BitBuds home">
+          <img src={logoAsset} alt="BitBuds Logo" className="h-10 w-auto object-contain" />
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -54,18 +55,29 @@ export const LandingNav: React.FC = () => {
         </nav>
 
         <div className="flex items-center gap-2">
-          <a
-            href="#pricing"
-            className="hidden items-center rounded-full px-4 py-2 text-sm font-medium text-foreground/80 hover:text-foreground sm:inline-flex"
-          >
-            Sign in
-          </a>
-          <a
-            href="#pricing"
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-[0_6px_18px_-6px_rgba(79,70,229,0.7)] transition-transform hover:brightness-110 active:scale-95"
-          >
-            Start Adventure
-          </a>
+          {isAuthenticated ? (
+            <Link
+              to="/dashboard"
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-[0_6px_18px_-6px_rgba(79,70,229,0.7)] transition-transform hover:brightness-110 active:scale-95"
+            >
+              My profile
+            </Link>
+          ) : (
+            <>
+              <Link
+                to="/auth"
+                className="hidden items-center rounded-full px-4 py-2 text-sm font-medium text-foreground/80 hover:text-foreground sm:inline-flex"
+              >
+                Sign in
+              </Link>
+              <Link
+                to="/auth"
+                className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white shadow-[0_6px_18px_-6px_rgba(79,70,229,0.7)] transition-transform hover:brightness-110 active:scale-95"
+              >
+                Start Adventure
+              </Link>
+            </>
+          )}
           <button
             type="button"
             aria-label="Toggle menu"

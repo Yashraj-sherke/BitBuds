@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { Code, User, LogOut, Menu, X } from 'lucide-react';
+import { User, LogOut, Menu, X } from 'lucide-react';
 import AuthModal from '../Auth/AuthModal';
+import logoAsset from '../../assets/logo.png';
 
 const Header: React.FC = () => {
   const { user, logout, isAuthenticated } = useAuth();
@@ -39,13 +40,8 @@ const Header: React.FC = () => {
       <header className="bg-white shadow-sm border-b border-purple-100 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                <Code className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                BitBuds
-              </span>
+            <Link to="/" className="flex items-center">
+              <img src={logoAsset} alt="BitBuds Logo" className="h-10 w-auto object-contain" />
             </Link>
 
             {/* Desktop Navigation */}

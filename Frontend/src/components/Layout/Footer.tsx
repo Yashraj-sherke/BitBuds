@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Code, Mail, Shield, FileText, Github, Twitter, Instagram } from 'lucide-react';
+import { Mail, Shield, FileText, Github, Twitter, Instagram } from 'lucide-react';
+import mascotAsset from '../../assets/bit-mascot.png';
 
 const Footer: React.FC = () => {
   return (
@@ -10,9 +11,7 @@ const Footer: React.FC = () => {
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                <Code className="w-5 h-5 text-white" />
-              </div>
+              <img src={mascotAsset} alt="BitBuds Mascot" className="h-9 w-auto object-contain" />
               <span className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
                 BitBuds
               </span>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChapterTag } from './ChapterTag';
 
@@ -88,8 +89,8 @@ export const Pricing: React.FC = () => {
                   </li>
                 ))}
               </ul>
-              <a
-                href="#top"
+              <Link
+                to="/auth"
                 className={`mt-8 inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold transition-transform active:scale-95 ${
                   p.highlight
                     ? 'bg-background text-foreground hover:brightness-110'
@@ -97,7 +98,7 @@ export const Pricing: React.FC = () => {
                 }`}
               >
                 {p.cta}
-              </a>
+              </Link>
             </motion.article>
           ))}
         </div>

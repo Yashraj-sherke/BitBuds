@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import heroIsland from '../../assets/hero-island.jpg';
 import { ChapterTag } from './ChapterTag';
@@ -72,15 +73,15 @@ export const LandingHero: React.FC = () => {
           </p>
 
           <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row">
-            <a
-              href="#pricing"
+            <Link
+              to="/auth"
               className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-3.5 text-base font-semibold text-white shadow-[0_16px_40px_-16px_rgba(79,70,229,0.7)] transition-transform hover:-translate-y-0.5 active:translate-y-0"
             >
               Start Adventure
               <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none">
                 <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </a>
+            </Link>
             <a
               href="#demo"
               className="inline-flex items-center justify-center gap-2 rounded-2xl bg-card px-6 py-3.5 text-base font-semibold text-foreground shadow-pop ring-1 ring-border transition-colors hover:bg-muted"
