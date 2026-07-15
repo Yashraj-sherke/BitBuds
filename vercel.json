@@ -1,7 +1,7 @@
 {
-  "installCommand": "cd BitBuds/Frontend && npm install",
-  "buildCommand": "cd BitBuds/Frontend && npm run build",
-  "outputDirectory": "BitBuds/Frontend/dist",
+  "installCommand": "cd Frontend && npm install",
+  "buildCommand": "cd Frontend && npm run build",
+  "outputDirectory": "Frontend/dist",
   "rewrites": [
     {
       "source": "/(.*)",
