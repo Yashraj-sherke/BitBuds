@@ -4,8 +4,11 @@ import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
+  const isWindows = process.platform === 'win32';
+  const isVercel = process.env.VERCEL === '1' || process.env.VERCEL === 'true';
+
   return {
-    cacheDir: 'D:/BitBuds-vite-cache',
+    cacheDir: isWindows && !isVercel ? 'D:/BitBuds-vite-cache' : '.vite',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
