@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: bitbuds-postgres
+    environment:
+      POSTGRES_USER: bitbuds
+      POSTGRES_PASSWORD: bitbuds_dev_password
+      POSTGRES_DB: bitbuds
+    ports:
+      - "5432:5432"
+    volumes:
+      - bitbuds_postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bitbuds -d bitbuds"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: bitbuds-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - bitbuds_redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  bitbuds_postgres:
+  bitbuds_redis:
