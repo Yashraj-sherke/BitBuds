@@ -1,107 +1,39 @@
-import { verifyAccessToken } from '../utils/jwt.util.js';
+import jwt from 'jsonwebtoken';
 import ApiError from '../utils/ApiError.js';
-import { ERROR_MESSAGES, USER_ROLES } from '../utils/constants.js';
-import asyncHandler from './asyncHandler.js';
-import User from '../models/User.model.js';
 
-/**
- * Authenticate user with JWT token
- */
-export const authenticate = asyncHandler(async (req, res, next) => {
-  // Get token from header
-  const authHeader = req.headers.authorization;
-  
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    throw ApiError.unauthorized(ERROR_MESSAGES.TOKEN_REQUIRED);
-  }
-
-  const token = authHeader.split(' ')[1];
-
+export const authenticate = async (req, _res, next) => {
   try {
-    // Verify token
-    const decoded = verifyAccessToken(token);
+    const authHeader = req.headers.authorization;
+    const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
 
-    // Check if user still exists
-    const user = await User.findById(decoded.id).select('-password');
-    
-    if (!user) {
-      throw ApiError.unauthorized(ERROR_MESSAGES.USER_NOT_FOUND);
+    if (!token) {
+      throw new ApiError(401, 'Authentication required');
     }
 
-    if (!user.isActive) {
-      throw ApiError.forbidden(ERROR_MESSAGES.ACCOUNT_DISABLED);
+    const secret = process.env.JWT_ACCESS_SECRET;
+    if (!secret) {
+      throw new ApiError(500, 'JWT configuration missing');
     }
 
-    // Attach user to request
-    req.user = {
-      id: user._id,
-      email: user.email,
-      role: user.role,
-      firstName: user.firstName,
-      lastName: user.lastName,
-    };
-
+    const decoded = jwt.verify(token, secret);
+    req.user = { id: decoded.sub, role: decoded.role, email: decoded.email };
     next();
-  } catch (error) {
-    if (error instanceof ApiError) {
-      throw error;
+  } catch (err) {
+    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+      return next(new ApiError(401, 'Invalid or expired token'));
     }
-    throw ApiError.unauthorized(ERROR_MESSAGES.INVALID_TOKEN);
+    next(err);
   }
-});
-
-/**
- * Authorize user based on roles
- * @param {...string} roles - Allowed roles
- */
-export const authorize = (...roles) => {
-  return (req, res, next) => {
-    if (!req.user) {
-      throw ApiError.unauthorized(ERROR_MESSAGES.UNAUTHORIZED);
-    }
-
-    if (!roles.includes(req.user.role)) {
-      throw ApiError.forbidden(ERROR_MESSAGES.FORBIDDEN);
-    }
-
-    next();
-  };
 };
 
-/**
- * Optional authentication - attach user if token is valid, but don't throw error
- */
-export const optionalAuth = asyncHandler(async (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return next();
+export const authorize = (...roles) => (req, _res, next) => {
+  if (!req.user) {
+    return next(new ApiError(401, 'Authentication required'));
   }
-
-  const token = authHeader.split(' ')[1];
-
-  try {
-    const decoded = verifyAccessToken(token);
-    const user = await User.findById(decoded.id).select('-password');
-    
-    if (user && user.isActive) {
-      req.user = {
-        id: user._id,
-        email: user.email,
-        role: user.role,
-        firstName: user.firstName,
-        lastName: user.lastName,
-      };
-    }
-  } catch (error) {
-    // Silently fail for optional auth
+  if (roles.length && !roles.includes(req.user.role)) {
+    return next(new ApiError(403, 'Insufficient permissions'));
   }
-
   next();
-});
-
-export default {
-  authenticate,
-  authorize,
-  optionalAuth,
 };
+
+export default { authenticate, authorize };

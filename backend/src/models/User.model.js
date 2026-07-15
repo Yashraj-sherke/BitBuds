@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import { USER_ROLES } from '../utils/constants.js';
 
 const userSchema = new mongoose.Schema(
   {
@@ -32,8 +31,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: Object.values(USER_ROLES),
-      default: USER_ROLES.USER,
+      enum: ['user', 'admin', 'parent'],
+      default: 'user',
     },
     isActive: {
       type: Boolean,
@@ -56,6 +55,18 @@ const userSchema = new mongoose.Schema(
       default: null,
       trim: true,
     },
+    badges: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Badge'
+    }],
+    xp: {
+      type: Number,
+      default: 0
+    },
+    level: {
+      type: Number,
+      default: 1
+    }
   },
   {
     timestamps: true, // Adds createdAt and updatedAt fields

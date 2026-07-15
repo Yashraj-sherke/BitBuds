@@ -1,104 +1,94 @@
 import { createClient } from 'redis';
 import logger from '../utils/logger.js';
 
-let redisClient = null;
-let isRedisEnabled = false;
+let client = null;
+let isConnected = false;
 
-/**
- * Connect to Redis
- */
+export const getRedisClient = () => client;
+
+export const isRedisAvailable = () => isConnected;
+
 export const connectRedis = async () => {
-  // Check if Redis is enabled
-  if (process.env.ENABLE_REDIS !== 'true') {
-    logger.info('Redis is disabled. Skipping Redis connection.');
-    return null;
-  }
+  const url = process.env.REDIS_URL || 'redis://localhost:6379';
+
+  client = createClient({
+    url,
+    socket: {
+      connectTimeout: 2000,
+      reconnectStrategy: false,
+    },
+  });
+
+  client.on('error', (err) => {
+    isConnected = false;
+    logger.warn('Redis client error — falling back to MongoDB for rankings', { error: err.message });
+  });
+
+  client.on('connect', () => {
+    isConnected = true;
+    logger.info('Redis connected');
+  });
+
+  client.on('end', () => {
+    isConnected = false;
+  });
 
   try {
-    const redisConfig = {
-      socket: {
-        host: process.env.REDIS_HOST || 'localhost',
-        port: parseInt(process.env.REDIS_PORT) || 6379,
-      },
-    };
-
-    // Add password if provided
-    if (process.env.REDIS_PASSWORD) {
-      redisConfig.password = process.env.REDIS_PASSWORD;
+    await Promise.race([
+      client.connect(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Redis connection timed out')), 3000)),
+    ]);
+    isConnected = client.isOpen;
+  } catch (err) {
+    isConnected = false;
+    logger.warn('Redis unavailable — leaderboard will use MongoDB fallback', { error: err.message });
+    if (client?.isOpen) {
+      await client.disconnect().catch(() => {});
     }
+  }
 
-    redisClient = createClient(redisConfig);
+  return client;
+};
 
-    // Error handler
-    redisClient.on('error', (err) => {
-      logger.error(`Redis Client Error: ${err}`);
-      isRedisEnabled = false;
+/** Update global leaderboard sorted set */
+export const updateLeaderboardScore = async (userId, xp) => {
+  if (!isConnected || !client?.isOpen) return false;
+
+  try {
+    await client.zAdd('leaderboard:global', { score: xp, value: String(userId) });
+    return true;
+  } catch (err) {
+    logger.warn('Redis ZADD failed', { error: err.message });
+    return false;
+  }
+};
+
+/** Fetch top N from Redis sorted set */
+export const getLeaderboardFromRedis = async (limit = 10, offset = 0) => {
+  if (!isConnected || !client?.isOpen) return null;
+
+  try {
+    const entries = await client.zRangeWithScores('leaderboard:global', offset, offset + limit - 1, {
+      REV: true,
     });
-
-    // Connect handler
-    redisClient.on('connect', () => {
-      logger.info('Redis client connecting...');
-    });
-
-    // Ready handler
-    redisClient.on('ready', () => {
-      logger.info('Redis client connected and ready');
-      isRedisEnabled = true;
-    });
-
-    // Reconnecting handler
-    redisClient.on('reconnecting', () => {
-      logger.warn('Redis client reconnecting...');
-    });
-
-    // End handler
-    redisClient.on('end', () => {
-      logger.warn('Redis client connection closed');
-      isRedisEnabled = false;
-    });
-
-    await redisClient.connect();
-
-    return redisClient;
-  } catch (error) {
-    logger.error(`Redis connection error: ${error.message}`);
-    logger.warn('Continuing without Redis cache');
-    isRedisEnabled = false;
+    return entries.map(({ value, score }) => ({ userId: value, xp: score }));
+  } catch (err) {
+    logger.warn('Redis leaderboard read failed', { error: err.message });
     return null;
   }
 };
 
-/**
- * Get Redis client instance
- */
-export const getRedisClient = () => {
-  return redisClient;
-};
+/** Get user rank from Redis (1-based) */
+export const getUserRankFromRedis = async (userId) => {
+  if (!isConnected || !client?.isOpen) return null;
 
-/**
- * Check if Redis is available
- */
-export const isRedisAvailable = () => {
-  return isRedisEnabled && redisClient && redisClient.isReady;
-};
-
-/**
- * Disconnect from Redis
- */
-export const disconnectRedis = async () => {
-  if (redisClient) {
-    try {
-      await redisClient.quit();
-      logger.info('Redis disconnected successfully');
-    } catch (error) {
-      logger.error(`Error disconnecting from Redis: ${error.message}`);
-    }
+  try {
+    const rank = await client.zRevRank('leaderboard:global', String(userId));
+    return rank === null ? null : rank + 1;
+  } catch (err) {
+    logger.warn('Redis rank lookup failed', { error: err.message });
+    return null;
   }
 };
 
-export default {
-  connectRedis,
-  getRedisClient,
-  isRedisAvailable,
-  disconnectRedis,
-};
+export default connectRedis;
