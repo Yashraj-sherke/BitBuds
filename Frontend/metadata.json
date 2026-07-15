@@ -1,0 +1,6 @@
+{
+  "name": "Kids Coding Adventures",
+  "description": "An interactive, gamified coding platform for kids featuring story-based challenges, a Duolingo-style level path, and an interactive coding workspace.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
