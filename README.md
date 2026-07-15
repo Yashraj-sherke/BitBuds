@@ -3,6 +3,18 @@
 
 A gamified coding platform designed to teach children programming through interactive missions, badges, and projects.
 
+## Backend Architecture Upgrade
+
+This repo now includes the PostgreSQL/Prisma backend design requested in the final master prompt:
+
+- Complete Prisma schema: [`backend/prisma/schema.prisma`](backend/prisma/schema.prisma)
+- Database domain constraints: [`backend/prisma/migrations/000001_domain_constraints/migration.sql`](backend/prisma/migrations/000001_domain_constraints/migration.sql)
+- System design, module boundaries, transaction flows, and scaling plan: [`backend/docs/system-design.md`](backend/docs/system-design.md)
+- Frontend-matched API response contract: [`backend/docs/api-contract.md`](backend/docs/api-contract.md)
+- Local Postgres/Redis services: [`backend/docker-compose.yml`](backend/docker-compose.yml)
+
+The existing Express/Mongoose prototype is left intact. The new files define the target NestJS + PostgreSQL + Prisma + Redis architecture so the project can migrate without losing the working prototype.
+
 ## 🚀 Quick Start
 
 ### Prerequisites
