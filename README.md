@@ -9,10 +9,17 @@
 [![Node.js](https://img.shields.io/badge/Node.js-Express-green.svg)](https://nodejs.org/)
 [![Database](https://img.shields.io/badge/Database-MongoDB-brightgreen.svg)](https://mongodb.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Backend CI](https://github.com/Yashraj-sherke/BitBuds/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/Yashraj-sherke/BitBuds/actions/workflows/backend-ci.yml)
 
-## 📸 Demo
+[**Live Demo 🚀**](https://bit-buds.vercel.app)
 
-<img width="1366" height="768" alt="Copy of Improve Website Cart Design" src="https://github.com/user-attachments/assets/48bbb33e-9559-4a3e-b5ff-796de9f898ea" />
+## 📸 Screenshots
+
+*(Please upload your actual deployed app screenshots to the `docs/screenshots/` folder to display them here!)*
+
+- **Interactive Dashboard:** `docs/screenshots/dashboard.png`
+- **Gamified Badges Gallery:** `docs/screenshots/badges.png`
+- **Active Coding Mission:** `docs/screenshots/mission.png`
 
 
 
@@ -100,9 +107,14 @@ npm run dev       # Starts frontend on localhost:5173
 - **Decoupled Badge Evaluation:** Badge awarding logic is separated into an eligibility endpoint (`/check-eligibility`) rather than being strictly hardcoded into mission completion logic, allowing for flexible evaluation criteria.
 - **Client-Side Environment Separation:** Utilizing Vite's environment variable handling (`.env.production`) to seamlessly swap between local development APIs and production backend URLs without code changes.
 
-## 🗺️ Roadmap
+## 🧪 Testing
 
-- [ ] **Migrate to Relational DB:** Complete migration from MongoDB/Mongoose to PostgreSQL/Prisma (architectural designs are staged in `/backend/docs`).
+The backend includes a comprehensive integration test suite verifying core security constraints:
+- **Test Suite:** 6 fully functional integration tests covering signup, authentication, and cross-user authorization.
+- **Coverage:** ~24% overall backend line coverage, including critical logic in auth controllers and models.
+- **Tools used:** Jest, Supertest, and `mongodb-memory-server` for a realistic in-memory test database.
+
+## 🗺️ Roadmap
 - [ ] **AI Coding Assistant:** Implement contextual, read-only AI hints for kids when they are stuck on a mission.
 - [ ] **Real-time Leaderboard:** Upgrade leaderboard from REST polling to real-time WebSockets.
 - [ ] **Educator/Parent Portal:** Build a secondary dashboard for monitoring student/child progress.
