@@ -15,11 +15,8 @@
 
 ## 📸 Screenshots
 
-*(Please upload your actual deployed app screenshots to the `docs/screenshots/` folder to display them here!)*
+<img width="1366" height="768" alt="Copy of Improve Website Cart Design" src="https://github.com/user-attachments/assets/17860c3c-6ffb-4d7f-a4ae-4667167b6a46" />
 
-- **Interactive Dashboard:** `docs/screenshots/dashboard.png`
-- **Gamified Badges Gallery:** `docs/screenshots/badges.png`
-- **Active Coding Mission:** `docs/screenshots/mission.png`
 
 
 
