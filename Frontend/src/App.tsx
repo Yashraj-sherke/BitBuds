@@ -288,7 +288,7 @@ export default function App() {
       {/* Footer Branding */}
       {view !== 'home' && (
         <footer className="border-t-4 border-slate-900 bg-slate-100 py-6 text-center text-xs font-bold text-slate-500">
-          <p>© 2026 CodeQuest Adventures. Designed for kids with accessible high-contrast UI/UX.</p>
+          <p>© 2026 BitBuds. Designed for kids with accessible high-contrast UI/UX.</p>
         </footer>
       )}
 

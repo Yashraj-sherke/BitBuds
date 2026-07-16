@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="./logo.png" alt="BitBuds Logo" width="120" />
+</div>
+
 # BitBuds 🚀
 **A gamified coding platform introducing kids (6–14) to programming fundamentals.**
 
