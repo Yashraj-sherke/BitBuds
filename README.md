@@ -8,12 +8,9 @@
 
 ## 📸 Demo
 
-> **[INSERT LIVE DEMO LINK HERE]** (e.g., `[Live Demo](https://bitbuds-app.com)`)
-> 
-> **[INSERT DEMO GIF/SCREENSHOT HERE]**
-> *(Replace the placeholder image below with a looping GIF or high-res screenshot showing the gamified mission flow)*
-> 
-> `![BitBuds Demo](https://via.placeholder.com/800x400?text=Insert+Demo+GIF+Here)`
+<img width="1366" height="768" alt="Copy of Improve Website Cart Design" src="https://github.com/user-attachments/assets/48bbb33e-9559-4a3e-b5ff-796de9f898ea" />
+
+
 
 ## 🎯 Overview
 BitBuds solves the problem of high barrier-to-entry in kids' coding education by wrapping computer science concepts in a gamified, reward-based experience. Unlike open-ended sandbox tools, it provides structured learning paths using missions, badges, and automated progression tracking to keep younger users engaged while learning logic and loops.
