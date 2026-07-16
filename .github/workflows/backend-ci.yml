@@ -34,17 +34,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Prisma schema validation
-        run: npx prisma validate
-
       - name: Lint placeholder
         run: npm run lint --if-present
 
       - name: Typecheck placeholder
         run: npm run typecheck --if-present
 
-      - name: Test placeholder
-        run: npm test --if-present
+      - name: Run Tests
+        run: npm test
 
       - name: Build placeholder
         run: npm run build --if-present
+

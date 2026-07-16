@@ -193,6 +193,10 @@ export const getCurrentUser = asyncHandler(async (req, res) => {
 });
 
 export const getUserById = asyncHandler(async (req, res) => {
+  if (req.user.id !== req.params.userId && req.user.role !== 'admin') {
+    throw new ApiError(403, 'You can only view your own profile');
+  }
+
   const user = await User.findById(req.params.userId).populate('badges');
   if (!user) {
     throw new ApiError(404, 'User not found');
