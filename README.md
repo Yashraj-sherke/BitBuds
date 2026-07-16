@@ -11,7 +11,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Backend CI](https://github.com/Yashraj-sherke/BitBuds/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/Yashraj-sherke/BitBuds/actions/workflows/backend-ci.yml)
 
-[**Live Demo 🚀**](https://bitbuds-demo.vercel.app) *(Update with your actual Fix 5 URL)*
+[**Live Demo 🚀**](https://bit-buds.vercel.app)
 
 ## 📸 Screenshots
 
