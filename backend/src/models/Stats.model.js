@@ -28,7 +28,7 @@ const statsSchema = new mongoose.Schema(
 );
 
 statsSchema.index({ totalXP: -1 });
-statsSchema.index({ userId: 1 });
+// userId index is created automatically due to unique: true in schema
 
 const Stats = mongoose.model('Stats', statsSchema);
 export default Stats;
